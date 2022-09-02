@@ -30,13 +30,11 @@ class Equipo:
         header = ["Nombre del equipo", "Referencia", "Proveedor", "Ciclo de mantenimiento", "Cantidad", "Ultima fecha de mantenimiento"]
         datos = [[self.nombre_equipo, self.referencia,self.proveedor,self.ciclo_mantenimiento, self.cantidad, self.ultima_fecha_mantenimiento]]
         print(tabulate(datos, header, tablefmt = "grid"))
-    
     def save(self):
         f = open(self.file, "a")
         linea = ";".join([self.nombre_equipo, self.referencia,self.proveedor,self.ciclo_mantenimiento, self.cantidad, self.ultima_fecha_mantenimiento])
         f.write(linea + "\n")
         f.close()
-
     def consulta (self,nombre):
         archivo = open("equipos_registrados.csv", "r")
         lineas = archivo.readlines() 
@@ -44,14 +42,12 @@ class Equipo:
         # datos = [[self.nombre, self.referencia, self.cantidad, self.proveedor, self.ciclo, self.fum]]
         datos = []
         datos.append(lineas)
-        
         for l in (lineas):
             # print(l)
             l = l.replace("\n", "")
             l = l.split(";")
             datos.append(l)
         print(tabulate(datos, header, tablefmt="grid"))
-
 #***********************************************************************************************************************
 def crear_equipo():
     print("Registrar nuevo equipo:")
@@ -90,7 +86,8 @@ def consultar_equipo():
         print("El equipo existe y está disponible en el laboratorio")
     else:
         print("Disculpa, el equipo no existe o no está disponible")
-        exit()
+        #exit()
+    
 #***********************************************************************************************************************
 def registro_mantenimiento():
     lista_equipos = get_all_equipos()
@@ -123,17 +120,34 @@ def registro_mantenimiento():
         #print(" ")
         #pos == 1
     print("Viendo la lista actualizada con fum de todos los equipos: ", lista_equipos)
-    save_all_equipos(lista_equipos)
+    #save_all_equipos(lista_equipos)
+
+    ##
+    a = open("database/equipos_registrados_modificados.csv", "w")
+    for e in lista_equipos:
+        a.write(e)
+    a.close()
+
+    save_all_equipos()
+    #save_all_equipos_modificados(lista_equipos)
+
     #print("Final TODA LA NUEVA VERSIÓN DE LISTA EQUIPOS ES: ", lista_equipos)
 #   Equipo.save()
 #   print(lista_equipos)
-
     #print_all_equipos()
 #***********************************************************************************************************************
-def save_all_equipos():
-    a = open("database/equipos_registrados_modificaciones.csv","w")
+def save_all_equipos_modificados():
+    #a = open("database/equipos_registrados.csv","w")
+    a = open("database/equipos_registrados_modificados.csv", "a")
     for e in equipos_registrados:
-        a.write (e)
+        a.write(e)
+    a.close()
+#***********************************************************************************************************************
+def save_all_equipos():
+    #a = open("database/equipos_registrados.csv","w")
+    a = open("database/equipos_registrados.csv", "a")
+    for e in equipos_registrados:
+        a.write(e)
     a.close()
 #***********************************************************************************************************************
 def get_all_equipos():

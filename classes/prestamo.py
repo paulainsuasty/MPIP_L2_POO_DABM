@@ -30,13 +30,11 @@ class Prestamo:
         header = ["Nombre del estudiante", "Numero de carnet", "Nombre del equipo en prestamo", "Numero de referencia del equipo", "Fecha de prestamo", "Fecha de entrega"]
         datos = [[self.nombre_estudiante, self.carnet, self.nombre_equipo_prestamo, self.referencia_prestamo, self.fecha_prestamo, self.fecha_entrega]]
         print(tabulate(datos, header, tablefmt = "grid"))
-
     def save_prestamos(self):
         f_prestamo = open(self.file_prestamo, "a")
         linea = ";".join([self.nombre_estudiante, self.carnet, self.nombre_equipo_prestamo, self.referencia_prestamo, self.fecha_prestamo, self.fecha_entrega])
         f_prestamo.write(linea + "\n")
         f_prestamo.close()
-
     def consulta_prestamos(self):
         archivo = open("prestamos_registrados.csv", "r")
         lineas = archivo.readlines()
@@ -49,7 +47,6 @@ class Prestamo:
             l = l.split(";")
             datos.append(l)
         print(tabulate(datos, header, tablefmt="grid"))
-
 # *********************************************************************************************************************
 def consultar_equipo():
     print("Opción para verificar si el equipo está registrado")
@@ -78,8 +75,7 @@ def consultar_equipo():
         print("El equipo existe y está disponible en el laboratorio")
     else:
         print("Disculpa, el equipo no existe")
-        exit()
-
+        main()
 # *********************************************************************************************************************
 def verificando_disponibilidad():
     print("Verificando la cantidad de un equipo:")
@@ -107,12 +103,12 @@ def verificando_disponibilidad():
                 print("La cantidad actual del equipo es de: ", datos[q][4])
             else:
                 print("cantidad actual sería:", datos[q][4], "por tanto, no se puede realizar el prestamo")
-                exit()
-
+                main()
 # *********************************************************************************************************************
 def actualizando_disponibilidad():
     nombre_equipo = input("Ingresa el nombre del equipo para actualizar la cantidad del equipo: ")
-    archivo = open("database/equipos_registrados.csv", "r")
+    #archivo = open("database/equipos_registrados.csv", "r")
+    archivo = open("database/equipos_registrados_modificados.csv", "r")
     lineas = archivo.readlines()
     datos = []
     datos.append(lineas)
@@ -125,29 +121,52 @@ def actualizando_disponibilidad():
     lista_equipos = get_all_equipos()
     for q in range(len(datos)):
         if datos[q][0] == nombre_equipo:
-            print("Dato actual de cantidad es:", q, int(datos[q][4]))
+            print("Dato actual de cantidad es:", int(datos[q][4]))
             datos[q][4]= (int(datos[q][4])-1)
             print("Nuevo dato de cantidad es:", datos[q][4])
-            print("Equipo encontrado")
+            #print("Equipo encontrado")
             pos = 0
             i = 0
             for e in lista_equipos:
                 datos = e.split(";")
                 datos[4] = int(datos[4]) - 1
-                print("El val de cantidad es: ", datos[4], "y el tipo es: ", type(datos[4]))
+                #print("El val de cantidad es: ", datos[4], "y el tipo es: ", type(datos[4]))
                 datos[4] = str(datos[4])
                 lista_equipos[pos] = ";".join((datos))
                 print("Revisando nueva version de lista de equipos: ", lista_equipos[pos])
                 print("Información actualizada!")
                 pos = pos + 1
                 i = i + 1
-            print("Viendo la lista actualizada con cantidad de todos los equipos: ", lista_equipos)
 
+            lista_prestamos = get_all_prestamos()
+            # a = open("database/prestamos_registrados_modificados.csv", "w")
+            # for e in lista_prestamos:
+            #     a.write(p)
+            # a.close()
+            #
+            # b = open("database/equipos_registrados_modificados.csv", "w")
+            # for e in lista_equipos:
+            #     b.write(p)
+            # b.close()
+
+            #c = open("database/prestamos_pr3_registrados_modificados.csv", "w")
+            # for e in lista_equipos:
+            #     for i in range (len(lista_equipos)):
+            #         c.write(lista_prestamos[i])
+            #         i = i+1
+            # c.close()
+
+            print("Viendo la lista actualizada con cantidad de todos los equipos: ", lista_equipos)
+            #save_all_equipos_modificados(lista_equipos)
 
     lista_prestamos = get_all_prestamos()
+    a = open("database/equipos_registrados_modificados.csv", "w")
+    for e in lista_equipos:
+        a.write(e) # lista_equipos
+    a.close()
+
     #save_all_equipos(lista_prestamos)
     save_all_equipos() #lista_equipos
-
 # *********************************************************************************************************************
 def crear_prestamos():
     print("Primero se debe consultar si el equipo existe")
@@ -172,14 +191,15 @@ def crear_prestamos():
     return p
 
     lista_prestamos = get_all_prestamos()
-    #save_all_prestamos(lista_prestamos)
-    save_all_prestamos()
+    save_all_prestamos(lista_prestamos)
+    #save_all_prestamos()
 
 #***********************************************************************************************************************
 #                               !!! INICIO DE REPITIENDO PARA SAVE ALL Y GET ALL EQUIPOS!!!
 #***********************************************************************************************************************
 def save_all_equipos():
-    a = open("database/equipos_registrados.csv", "w")
+    #a = open("database/equipos_registrados.csv", "w")
+    a = open("database/equipos_registrados.csv", "a")
     for e in equipos_registrados:
         a.write(e)
     a.close()
@@ -253,9 +273,10 @@ def consultar_prestamos_por_estudiante():
 
     #header = ["Nombre del estudiante", "Numero de carnet", "Nombre del equipo en prestamo","Numero de referencia del equipo", "Fecha de prestamo", "Fecha de entrega"]
 
+##### **** PRUEBA 2 ****
 def registro_entrega():
     print("Opción para registrar la entrega de un equipo: ")
-    numero_carnet =input("Ingresa el numero de carnet del estudiante: ")
+    numero_carnet = input("Ingresa el numero de carnet del estudiante: ")
     nombre_equipo = input("Ingresa el nombre del equipo para actualizar la cantidad del equipo:")
     archivo = open("database/equipos_registrados.csv", "r")
     archivo_prestamos = open("database/prestamos_registrados.csv", "r")
@@ -263,13 +284,12 @@ def registro_entrega():
     lineas_prestamos = archivo_prestamos.readlines()
     datos = []
     datos_prestamos = []
-    #datos.append(lineas)
-    #datos_prestamos.append(lineas_prestamos)
+    # datos.append(lineas)
+    # datos_prestamos.append(lineas_prestamos)
     ### ****
     lista_equipos = get_all_equipos()
     pos = 0
     i = 0
-
     for l in (lineas):
         # print(l)
         l = l.replace("\n", "")
@@ -280,50 +300,116 @@ def registro_entrega():
         l_prestamos = l_prestamos.replace("\n", "")
         l_prestamos = l_prestamos.split(";")
         datos_prestamos.append(l_prestamos)
-
-    print("Los datos en datos prestamos en y son: ", datos_prestamos)
-
+    # print("Los datos en datos prestamos en y son: ", datos_prestamos)
     y = 0
-    for y in range (len(datos_prestamos)):
+    for y in range(len(datos_prestamos)):
         print("ronda en y: ", y)
         # SI HAY UN PRESTAMO CONESE NUM CARNET:
-        print("presentando datos en y 1: ",  datos_prestamos[y][1])
-        if datos_prestamos[y][1] == numero_carnet:
+        print("presentando datos en y 1: ", datos_prestamos[y][1])
+        if (datos_prestamos[y][1] == numero_carnet):
             print("El estudiante con numero de carnet: ", numero_carnet, "Si tiene prestamos en el sistema")
             for q in range(len(datos)):
-                if datos[q][0] == nombre_equipo:
+                if (datos_prestamos[y][1] == numero_carnet) and datos[q][0] == nombre_equipo:
                     print("La cantidad actual de equipos:", nombre_equipo, "en el sistema en este momento son: ", datos[q][4])
-                    for e in lista_equipos:
-                        datos = e.split(";")
-                        datos[4] = int(datos[4]) + 1
-                        print("El nuevo valor de cantidad para el equipo: ", nombre_equipo , "es: ", datos[4])
-                        datos[4] = str(datos[4])
-                        lista_equipos[pos] = ";".join((datos))
-                        print("Revisando nueva version de lista de equipos: ", lista_equipos[pos])
-
-                        print("Previo a intentar eliminar: ", datos_prestamos)
-                        datos_prestamos.remove(datos_prestamos[y])
-                        print("AHORA VIENDO DATOS PRESTAMOS,DESPUES DE ELIMINAR EL NUM DE CARNET:")
-                        print(datos_prestamos)
-                        print("DESPUES DE ELIMINARLO: Información actualizada!")
-
-                        pos = pos + 1
-                        i = i + 1
-
-                else:
-                    print("El equipo no se encuentra en prestamo")
-                    print("Por favor registra el equipo o verifica si escribiste el nombre correo y vuelve a intentarlo")
-                    # exit()
-
-            print("FIN DE IFs Viendo la lista actualizada con cantidad de todos los equipos: ", lista_equipos)
-
+            for e in lista_equipos:
+                datos = e.split(";")
+                datos[4] = int(datos[4]) + 1
+                print("El nuevo valor de cantidad para el equipo: ", nombre_equipo, "es: ", datos[4])
+                datos[4] = str(datos[4])
+                lista_equipos[pos] = ";".join((datos))
+                print("Revisando nueva version de lista de equipos: ", lista_equipos[pos])
+                print("Previo a intentar eliminar: ", datos_prestamos)
+                datos_prestamos.remove(datos_prestamos[y])
+                print("AHORA VIENDO DATOS PRESTAMOS,DESPUES DE ELIMINAR EL NUM DE CARNET:")
+                print(datos_prestamos)
+                print("DESPUES DE ELIMINARLO: Información actualizada!")
+                pos = pos + 1
+                i = i + 1
         else:
-            print("El estudiante con el numero de carnet: ", numero_carnet , "no tiene prestamos registrados")
-            exit()
+            print("El equipo no se encuentra en prestamo o el estudiante no tiene prestamos registrados")
+            print("El estudiante con el numero de carnet: ", numero_carnet, "no tiene prestamos registrados")
+            # print("Por favor registra el equipo o verifica si escribiste el nombre correo y vuelve a intentarlo")
+            # exit()
+            print("FIN DE IFs Viendo la lista actualizada con cantidad de todos los equipos: ", lista_equipos)
+        y = y + 1
 
     print("El final y nuevo datos de prestamo es:", datos_prestamos)
     print("ronda en y abajo: ", y)
-    y = y+1
+    main()
+
+# def registro_entrega():
+#     print("Opción para registrar la entrega de un equipo: ")
+#     numero_carnet =input("Ingresa el numero de carnet del estudiante: ")
+#     nombre_equipo = input("Ingresa el nombre del equipo para actualizar la cantidad del equipo:")
+#     archivo = open("database/equipos_registrados.csv", "r")
+#     archivo_prestamos = open("database/prestamos_registrados.csv", "r")
+#     lineas = archivo.readlines()
+#     lineas_prestamos = archivo_prestamos.readlines()
+#     datos = []
+#     datos_prestamos = []
+#     #datos.append(lineas)
+#     #datos_prestamos.append(lineas_prestamos)
+#     ### ****
+#     lista_equipos = get_all_equipos()
+#     pos = 0
+#     i = 0
+#
+#     for l in (lineas):
+#         # print(l)
+#         l = l.replace("\n", "")
+#         l = l.split(";")
+#         datos.append(l)
+#     #
+#     for l_prestamos in (lineas_prestamos):
+#         l_prestamos = l_prestamos.replace("\n", "")
+#         l_prestamos = l_prestamos.split(";")
+#         datos_prestamos.append(l_prestamos)
+#
+#     #print("Los datos en datos prestamos en y son: ", datos_prestamos)
+#
+#     y = 0
+#     for y in range (len(datos_prestamos)):
+#         print("ronda en y: ", y)
+#         # SI HAY UN PRESTAMO CONESE NUM CARNET:
+#         print("presentando datos en y 1: ",  datos_prestamos[y][1])
+#         if datos_prestamos[y][1] == numero_carnet:
+#             print("El estudiante con numero de carnet: ", numero_carnet, "Si tiene prestamos en el sistema")
+#             for q in range(len(datos)):
+#                 if datos[q][0] == nombre_equipo:
+#                     print("La cantidad actual de equipos:", nombre_equipo, "en el sistema en este momento son: ", datos[q][4])
+#                     for e in lista_equipos:
+#                         datos = e.split(";")
+#                         datos[4] = int(datos[4]) + 1
+#                         print("El nuevo valor de cantidad para el equipo: ", nombre_equipo , "es: ", datos[4])
+#                         datos[4] = str(datos[4])
+#                         lista_equipos[pos] = ";".join((datos))
+#                         print("Revisando nueva version de lista de equipos: ", lista_equipos[pos])
+#
+#                         print("Previo a intentar eliminar: ", datos_prestamos)
+#                         datos_prestamos.remove(datos_prestamos[y])
+#                         print("AHORA VIENDO DATOS PRESTAMOS,DESPUES DE ELIMINAR EL NUM DE CARNET:")
+#                         print(datos_prestamos)
+#                         print("DESPUES DE ELIMINARLO: Información actualizada!")
+#
+#                         pos = pos + 1
+#                         i = i + 1
+#
+#                 else:
+#                     print("El equipo no se encuentra en prestamo")
+#                     print("Por favor registra el equipo o verifica si escribiste el nombre correo y vuelve a intentarlo")
+#                     # exit()
+#
+#             print("FIN DE IFs Viendo la lista actualizada con cantidad de todos los equipos: ", lista_equipos)
+#
+#         else:
+#             print("El estudiante con el numero de carnet: ", numero_carnet , "no tiene prestamos registrados")
+#
+#
+#     print("El final y nuevo datos de prestamo es:", datos_prestamos)
+#     print("ronda en y abajo: ", y)
+#     y = y+1
+#
+#     main()
 
 # ***********************************************************************************************************************
 # ************************************* INTENTOS  PREVIOS ***************************************************************

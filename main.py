@@ -25,8 +25,8 @@ def main():
             p.save_prestamos()
             print("Viendo todos los prestamos registrados:")
             get_all_prestamos()
-            #main()
-            exit()
+            main()
+            #exit()
         elif opcion_menu2 == "3":
             registro_mantenimiento()
             main()
@@ -38,8 +38,8 @@ def main():
             consultar_prestamos_por_estudiante()
             print("AHORA SI EL REGISTRO DE ENTREGA")
             registro_entrega()
-            #main()
-            exit()
+            main()
+            #exit()
         elif opcion_menu2 == "5":
             print_all_equipos_originales()
             main()
