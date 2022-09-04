@@ -8,6 +8,7 @@ from classes.menu import *
 from main import *
 
 global e
+global ninguno
 global equipos_registrados
 global datos
 global datos_separados
@@ -87,7 +88,7 @@ def consultar_equipo():
     else:
         print("Disculpa, el equipo no existe o no está disponible")
         #exit()
-    
+
 #***********************************************************************************************************************
 def registro_mantenimiento():
     lista_equipos = get_all_equipos()
@@ -119,6 +120,8 @@ def registro_mantenimiento():
         #print("* FIN DE RONDA*")
         #print(" ")
         #pos == 1
+
+    print("**")
     print("Viendo la lista actualizada con fum de todos los equipos: ", lista_equipos)
     #save_all_equipos(lista_equipos)
 
@@ -157,11 +160,11 @@ def get_all_equipos():
 #***********************************************************************************************************************
 def evaluando_cantidad():
     print("Opción para verificar la cantidad de equipos")
-    nombre_equipo = input("Ingresa el nombre del equipo a evaluar su disponibilidad actual")
+    nombre_equipo = input("Ingresa el nombre del equipo a evaluar su disponibilidad actual: ")
     archivo = open("database/equipos_registrados.csv", "r")
     lineas = archivo.readlines()
     datos = []
-    datos.append(lineas)
+    #datos.append(lineas)
     for l in (lineas):
         # print(l)
         l = l.replace("\n", "")
@@ -175,27 +178,54 @@ def evaluando_cantidad():
     #nueva_cantidad = (datos[h][4])
     nueva_cantidad = 0
 
+    ninguno = 0
+
     for h in range(len(datos)):
-        if datos[h][1] == nombre_equipo :
-            print("Si encontré coincidencia")
-            print("El dato que estoy viendo es: ", datos[h])
-            print("Viendo la cantidad actual del equipo (datos(4)): ", datos[h][4])
+        #print("los datos son: ", datos)
+        #print("los datos de [h][1] son: ", datos[h][1])
+        if datos[h][0] != nombre_equipo :
+            ninguno = ninguno +1
+        elif datos[h][0] == nombre_equipo :
+            #print("datos de h y de 1 son: ", datos[h][1])
+            #print("Si encontré coincidencia!")
+            #print("El dato que estoy viendo es: ", datos[h])
+            #print("Viendo la cantidad actual del equipo: ", nombre_equipo, " es de: ", datos[h][4])
 
             # AQUI ESTOY ACTUALIZANDO CANTIDAD DE EQUIPOS COMO SI FUERA PRESTAMO!
             #nueva_cantidad = datos[h][4] - 1
             #nueva_cantidad = nueva_cantidad - 1
             #print("Actualizando cantidad del equipo! ")
+        #else:
+        #    print("No encontré el equipo registrado!")
+        #    exit()
 
-        if int(datos[h][4]) <= 0:
-        #if int(nueva_cantidad) <= 0:
-            print("No hay más disponibilidad de equipos, no se puede realizar el prestamo")
+        #print("EL EQUIPO QUE ESTOY REVISANDO ES: ", datos[h])
+        #print("EL VALOR DE CANTIDAD ES DE: ", datos[h][4])
 
-    else:
-        print("Queda un total de: ", nueva_cantidad, "del equipo: ", nombre_equipo)
-        print("Por tanto, si se puede realizar el prestamo")
-        # print("Para un q de: ", q, " en 1 se tienen datos: ", datos[q][1])
-        #if datos[h][1] == cantidad:
-        #    tiene_prestamo = tiene_prestamo + 1
+            if (int(datos[h][4]) <= 0):
+                print("Viendo la cantidad actual del equipo ", nombre_equipo, " es de: ", datos[h][4])
+                print("No hay más disponibilidad de equipos, por tanto, no se puede realizar el prestamo")
+                exit()
+            elif int(datos[h][4]) > 0 :
+                # print("Queda un total de: ", nueva_cantidad, "del equipo: ", nombre_equipo)
+                print("Viendo la cantidad actual del equipo: ", nombre_equipo, " es de: ", datos[h][4])
+                print("Por tanto, si se puede realizar el prestamo")
+            else:
+                #print("ninguna de las condiciones")
+                print("NINGUNA")
+            # print("Para un q de: ", q, " en 1 se tienen datos: ", datos[q][1])
+            #if datos[h][1] == cantidad:
+            #    tiene_prestamo = tiene_prestamo + 1
+        #else:
+            #ninguno = ninguno +1
+            #print("EL EQUIPO NO ESTÁ REGISTRADO")
+            #print("ninguno es: ", ninguno)
+            # if ninguno >= 1:
+            #     print("El equipo no se encuentra registrado en el inventario del laboratorio")
+
+    if ninguno >= len(datos):
+        print("El equipo no está registrado")
+
 #***********************************************************************************************************************
 def print_all_equipos_originales():
     a = open("database/equipos_registrados.csv", "r")

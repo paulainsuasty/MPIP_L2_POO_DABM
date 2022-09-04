@@ -13,7 +13,7 @@ class Menu:
         print("1. Tecnico")
         print("2. Estudiante")
         print("3. Salir del programa")
-        print("4. Pruebas para actualizando disponibilidad")
+        #print("4. Pruebas para actualizando disponibilidad")
         #print("AA")
         opcion_menu =input(">>>")
 

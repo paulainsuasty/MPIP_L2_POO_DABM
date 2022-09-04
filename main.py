@@ -34,9 +34,9 @@ def main():
             #print_all_equipos()
 
         elif opcion_menu2 == "4":
-            print("REVISANDO CANTIDAD DE PRESTAMOS:")
+            print("Revisando la cantidad de prestamos por el estudiante")
             consultar_prestamos_por_estudiante()
-            print("AHORA SI EL REGISTRO DE ENTREGA")
+            print("Realizando el registro de entrega")
             registro_entrega()
             main()
             #exit()
@@ -59,20 +59,22 @@ def main():
             main()
         elif opcion_menu2 == "2":
             consultar_equipo()
+            main()
         elif opcion_menu2 == "3":
             print("Evaluando cantidad")
             evaluando_cantidad()
-            print("Consultar equipo")
-            consultar_equipo()
+            #print("Consultar equipo")
+            #consultar_equipo()
             main()
 
     elif opcion_menu == "3":
+        #print("Gracias")
         exit()
 
-    elif opcion_menu == "4":
+    #elif opcion_menu == "4":
         #actualizando_disponibilidad()
-        verificando_disponibilidad()
-        main()
+    #    verificando_disponibilidad()
+    #    main()
 
 if __name__ == "__main__":
     main()
